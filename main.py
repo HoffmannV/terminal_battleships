@@ -4,6 +4,7 @@ import re
 from Game import Game
 from Player import Player
 
+
 def load_logo():
     logo = """//      ____        __  __  __          __    _                 
 //     / __ )____ _/ /_/ /_/ /__  _____/ /_  (_)___  _____      
@@ -13,6 +14,9 @@ def load_logo():
 //                                         /_/                  
 //"""
     print(logo)
+
+
+# GPG Test
 
 
 def load_menu_options():
@@ -132,17 +136,13 @@ def initialize_game():
 
 
 if __name__ == '__main__':
-
     load_logo()
     load_menu_options()
 
-    #Test game_update
-    #game.update_game_board('c1', test_opponent)
-    #game.update_game_board('c2', test_opponent)
-    #game.update_game_board('c3', test_opponent)
-    #game.update_game_board('j2', test_opponent)
-    #game.update_game_board('c10', test_opponent)
-    #game.update_game_board('h2', test_opponent)
-
-
-
+    # Test game_update
+    # game.update_game_board('c1', test_opponent)
+    # game.update_game_board('c2', test_opponent)
+    # game.update_game_board('c3', test_opponent)
+    # game.update_game_board('j2', test_opponent)
+    # game.update_game_board('c10', test_opponent)
+    # game.update_game_board('h2', test_opponent)
