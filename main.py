@@ -90,7 +90,14 @@ def choose_game_difficulty():
     difficulty_option = input(difficulty_options)
     match difficulty_option.upper():
         case 'E':
-            pass
+            game, test_opponent = initialize_game()
+            game.place_ships_random(test_opponent)
+            game.preview_game_board(test_opponent)
+            while not test_opponent.known_hits == test_opponent.ship_positions:
+                coordinates = input("Shoot your projectile: ")
+                shooting_phase(coordinates, game, test_opponent)
+            print("    ---Game-over!---    ")
+            print("    ----You-won!---     ")
         case 'N':
             pass
         case 'H':
@@ -128,8 +135,7 @@ def shooting_phase(coordinates, game, test_opponent):
 
 def initialize_game():
     game = Game()
-    test_ships = {'C': [1, 2, 3, 4, 5, 10], 'D': [10], 'E': [10], 'J': [2], 'I': [2], 'H': [2],
-                  'G': [7, 8, 9, 2]}
+    test_ships = {}
     test_opponent = Player(test_ships)
 
     return game, test_opponent
