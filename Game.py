@@ -164,6 +164,9 @@ class Game:
         tmp_y_axis = [int(y.strip()) for y in self.y_axis]
         possible_positions = {}
 
+        # clear preloaded ship positions
+        player.reset_ship_postions()
+
         for x in tmp_x_axis:
             possible_positions.update({x: [y for y in tmp_y_axis]})
 
@@ -185,6 +188,18 @@ class Game:
 
                 # decide on ship orientation 0 for horizontal 1 for vertical
                 orientation = random.choice([0, 1])
+
+                next_key = find_next_key(possible_positions, x_coordinate)
+                prev_key = find_prev_key(possible_positions, x_coordinate)
+                if y_coordinate == 10:
+                    up_field = 0
+                else:
+                    up_field = y_coordinate - 1
+                if y_coordinate == 0:
+                    down_field = 10
+                else:
+                    down_field = y_coordinate + 1
+
                 # decide on the initial direction
                 direction = random.choice([0, 1])
 
@@ -192,19 +207,20 @@ class Game:
                     if orientation == 1:
                         # check if the right adjacent field is already occupied
 
-                        next_key = find_next_key(possible_positions, x_coordinate)
-                        prev_key = find_prev_key(possible_positions, x_coordinate)
-
-                        if y_coordinate in possible_positions[next_key] and not x_coordinate == next_key:
+                        if y_coordinate in possible_positions[next_key] and not x_coordinate == next_key \
+                                and not (y_coordinate in dict_entries_to_remove[next_key]):
                             x_coordinate = next_key
+                            next_key = find_next_key(possible_positions, x_coordinate)
                             # player.ship_positions.update({x_coordinate: y_coordinate})
                             dict_entries_to_remove[x_coordinate].append(y_coordinate)
                             # possible_positions[x_coordinate].pop(
                             #    possible_positions[x_coordinate].index(y_coordinate))
                             failed = False
 
-                        elif not x_coordinate == prev_key and y_coordinate in possible_positions[prev_key]:
+                        elif not x_coordinate == prev_key and y_coordinate in possible_positions[prev_key] \
+                                and not (y_coordinate in dict_entries_to_remove[prev_key]):
                             x_coordinate = prev_key
+                            prev_key = find_prev_key(possible_positions, x_coordinate)
                             # player.ship_positions.update({x_coordinate: y_coordinate})
                             dict_entries_to_remove[x_coordinate].append(y_coordinate)
                             # possible_positions[x_coordinate].pop(
@@ -216,27 +232,26 @@ class Game:
                             failed = True
 
                     elif orientation == 0:
-                        # check if the down adjacent field is already occupied
-
-                        if y_coordinate == 10:
-                            up_field = 10
-                        else:
-                            up_field = y_coordinate + 1
-                        if y_coordinate == 0:
-                            down_field = 0
-                        else:
-                            down_field = y_coordinate - 1
-
-                        if y_coordinate in possible_positions[x_coordinate] and not y_coordinate == up_field:
+                        if y_coordinate in possible_positions[x_coordinate] and not y_coordinate == up_field \
+                                and not (up_field in dict_entries_to_remove[x_coordinate]):
                             y_coordinate = up_field
+                            if y_coordinate == 10:
+                                up_field = 0
+                            else:
+                                up_field = y_coordinate - 1
                             # player.ship_positions.update({x_coordinate: y_coordinate})
                             dict_entries_to_remove[x_coordinate].append(y_coordinate)
                             # possible_positions[x_coordinate].pop(
                             #    possible_positions[x_coordinate].index(y_coordinate))
                             failed = False
 
-                        elif not y_coordinate == down_field and y_coordinate in possible_positions[x_coordinate]:
+                        elif not y_coordinate == down_field and y_coordinate in possible_positions[x_coordinate] \
+                                and not (up_field in dict_entries_to_remove[x_coordinate]):
                             y_coordinate = down_field
+                            if y_coordinate == 10:
+                                down_field = 0
+                            else:
+                                down_field = y_coordinate + 1
                             # player.ship_positions.update({x_coordinate: y_coordinate})
                             dict_entries_to_remove[x_coordinate].append(y_coordinate)
                             # possible_positions[x_coordinate].pop(
@@ -247,17 +262,17 @@ class Game:
                             dict_entries_to_remove.clear()
                             failed = True
 
-                #print(possible_positions)
+                # print(possible_positions)
                 if not failed:
                     for key in dict_entries_to_remove.keys():
                         for item in dict_entries_to_remove[key]:
-                            if item in player.ship_positions[key]:
+                            if item in player.ship_positions[key] and not (item in possible_positions[key]):
                                 failed = True
                             else:
                                 player.ship_positions[key].append(item)
+                                # print("Key: {0}, Item: {1}".format(key, possible_positions[key]))
                                 possible_positions[key].pop(possible_positions[key].index(item))
-
-            dict_entries_to_remove.clear()
+                dict_entries_to_remove.clear()
 
         # Prints the ship positions for testing purposes
         # print(player.ship_positions)

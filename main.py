@@ -1,5 +1,6 @@
 import os
 import re
+import time
 
 from Game import Game
 from Player import Player
@@ -80,27 +81,33 @@ def choose_game_difficulty():
     load_logo()
     difficulty_options = """//  ---Single Player---
 //
-//  [E]easy
-//  [N]ormal
-//  [H]ard
+//  [S]olo
+//  [K]I
 //  [T]est
 //  [B]ack
     """
 
     difficulty_option = input(difficulty_options)
     match difficulty_option.upper():
-        case 'E':
+        case 'S':
             game, test_opponent = initialize_game()
             game.place_ships_random(test_opponent)
-            game.preview_game_board(test_opponent)
+            print(test_opponent.ship_positions)
             while not test_opponent.known_hits == test_opponent.ship_positions:
                 coordinates = input("Shoot your projectile: ")
                 shooting_phase(coordinates, game, test_opponent)
+                print(test_opponent.ship_positions)
             print("    ---Game-over!---    ")
-            print("    ----You-won!---     ")
-        case 'N':
-            pass
-        case 'H':
+            print("    ----You-won!---     \n")
+            print("Returning to the main menu in ", end="")
+            for i in range(1, 10):
+                print("{0}... ".format(10-i), end="")
+                time.sleep(1)
+            print("\n")
+            os.system('cls')
+            load_logo()
+            load_menu_options()
+        case 'K':
             pass
         case 'T':
             game, test_opponent = initialize_game()
@@ -135,7 +142,8 @@ def shooting_phase(coordinates, game, test_opponent):
 
 def initialize_game():
     game = Game()
-    test_ships = {}
+    test_ships = {'A': [], 'B': [10], 'C': [10], 'D': [10], 'E': [10, 6, 7, 8], 'F': [10, 2, 3, 4, 9], 'G': [],
+                   'H': [], 'I': [3, 4], 'J': [6, 7, 8, 9]}
     test_opponent = Player(test_ships)
 
     return game, test_opponent

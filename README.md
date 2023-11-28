@@ -5,6 +5,10 @@ The locations of the fleets are concealed from the other player. This project wi
 
 ## Menu options
 - Start game
+    - Solo
+    - KI
+    - Test
+    - Back
 - Resume game
 - Multiplayer
 - Exit
@@ -13,5 +17,5 @@ The locations of the fleets are concealed from the other player. This project wi
 - Play vs. AI
 - Multiplayer ?
 
-## Ship placement
-Here goes some text when i actually have a idea how I will implement this feature
+## Game Mode "Solo"
+Five ships are placed randomly in the grid
