@@ -17,7 +17,12 @@ def load_logo():
     print(logo)
 
 
-# GPG Test
+def return_to_menu_countdown(time_in_sec):
+    print("Returning to the main menu in ", end="")
+    for i in range(1, time_in_sec):
+        print("{0}... ".format(10 - i), end="")
+        time.sleep(1)
+    print("\n")
 
 
 def load_menu_options():
@@ -90,20 +95,29 @@ def choose_game_difficulty():
     difficulty_option = input(difficulty_options)
     match difficulty_option.upper():
         case 'S':
+            show_opponent_ship_positions = False
             game, test_opponent = initialize_game()
             game.place_ships_random(test_opponent)
-            print(test_opponent.ship_positions)
             while not test_opponent.known_hits == test_opponent.ship_positions:
                 coordinates = input("Shoot your projectile: ")
+
+                if coordinates == "enable cheats":
+                    show_opponent_ship_positions = True
+                    print("Showing enemy ship positions")
+                    print(test_opponent.ship_positions)
+                    coordinates = input("Shoot your projectile: ")
+                elif coordinates == "disable cheats":
+                    show_opponent_ship_positions = False
+                    print("Disabled showing enemy ship positions")
+                    coordinates = input("Shoot your projectile: ")
+
                 shooting_phase(coordinates, game, test_opponent)
-                print(test_opponent.ship_positions)
+                if show_opponent_ship_positions is True:
+                    print(test_opponent.ship_positions)
+
             print("    ---Game-over!---    ")
             print("    ----You-won!---     \n")
-            print("Returning to the main menu in ", end="")
-            for i in range(1, 10):
-                print("{0}... ".format(10-i), end="")
-                time.sleep(1)
-            print("\n")
+            return_to_menu_countdown(10)
             os.system('cls')
             load_logo()
             load_menu_options()
