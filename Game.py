@@ -46,7 +46,6 @@ class Game:
         pass
 
     def draw_game_board(self):
-        os.system('cls')
         for element in self.x_axis:
             if element == "J":
                 print(Color.Bg.black, element, Color.Bg.default)
@@ -94,7 +93,6 @@ class Game:
                     print(Color.Bg.blue, " ", Color.Bg.default, end="")
 
     def update_game_board(self, coordinates, opponent_player):
-        os.system('cls')
         x_coordinate = coordinates[0].upper()
         y_coordinate = coordinates[1:]
 
@@ -165,7 +163,7 @@ class Game:
         possible_positions = {}
 
         # clear preloaded ship positions
-        player.reset_ship_postions()
+        player.reset_ship_positions()
 
         for x in tmp_x_axis:
             possible_positions.update({x: [y for y in tmp_y_axis]})
